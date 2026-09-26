@@ -1,5 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { Link } from "react-router";
+import Checkout from "./Checkout";
+import { MdOutlineDelete } from "react-icons/md";
+
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
@@ -21,6 +25,31 @@ const Cart = () => {
 
   const total = subTatal + ship - discount;
 
+  const incquan = (id) => {
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        item.id === id ? { ...item, quantity: (item.quantity || 1) + 1 } : item,
+      ),
+    );
+  };
+
+  const decquan = (id) => {
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        item.id === id && item.quantity !== 1 ? { ...item, quantity: (item.quantity || 1) - 1 } : item, 
+      ),
+    );
+  };
+  
+  const clearCart = () => {
+    setCart([]);
+    localStorage.removeItem('cart');
+  }
+
+  const removeCartItem = () => {
+    alert("Add the functionality")
+  }
+
   return (
     <div className="cart-wrapper">
       <div className="container my-4">
@@ -29,10 +58,14 @@ const Cart = () => {
           <div className="col-lg-8">
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h4 className="mb-0">Shopping Cart</h4>
-              <span className="text-muted">3 items</span>
+              <div className="d-flex gap-2 align-items-center">
+                <button onClick={clearCart} className="btn btn-outline-danger border">Clear Cart</button>
+                <span className="text-muted">3 items</span>
+              </div>
             </div>
 
-            {/* Product Cards */}
+            {(cart.length !== 0) ? 
+            // product card
             <div className="d-flex flex-column gap-3">
               {cart.map((item) => (
                 <div className="product-card p-3 shadow-sm border rounded">
@@ -52,27 +85,41 @@ const Cart = () => {
                     </div>
                     <div className="col-md-3">
                       <div className="d-flex align-items-center gap-2">
-                        <button className="btn btn-outline-secondary btn-sm">
+                        <button
+                          onClick={() => {
+                            decquan(item.id);
+                          }}
+                          className="btn btn-outline-secondary btn-sm"
+                        >
                           -
                         </button>
-                        Quantity: {item.quantity}
-                        <button className="btn btn-outline-secondary btn-sm">
+                        Quantity: {(item.quantity || 1)}
+                        <button
+                          onClick={() => {
+                            incquan(item.id);
+                          }}
+                          className="btn btn-outline-secondary btn-sm"
+                        >
                           +
                         </button>
                       </div>
                     </div>
                     <div className="col-md-2">
                       <span className="fw-bold">
-                        Rs. {item.price?.toFixed(2)}
+                        Rs. { item.price * (item.quantity || 1) }
                       </span>
                     </div>
-                    <div className="col-md-1">
-                      <i className="bi bi-trash text-danger cursor-pointer"></i>
-                    </div>
+                    <div onClick={removeCartItem} className="col-md-1 cursor-pointer"><MdOutlineDelete className="text-danger fs-4" /></div>
                   </div>
                 </div>
-              ))}
+              ))};
             </div>
+            : <div className="d-flex flex-column gap-3 align-items-center mt-5">
+              <h3 className="text-danger">The cart is Empty</h3>
+              <Link to={"/"} className='btn btn-light border border-secondary'>Back to shop</Link>
+            </div>
+            }
+            
           </div>
 
           {/* Summary Section */}
@@ -82,7 +129,7 @@ const Cart = () => {
 
               <div className="d-flex justify-content-between mb-3">
                 <span className="text-muted">Subtotal</span>
-                <span>Rs. {subTatal}</span>
+                <span>Rs. {subTatal.toFixed(2)}</span>
               </div>
               <div className="d-flex justify-content-between mb-3">
                 <span className="text-muted">Discount</span>
@@ -95,26 +142,13 @@ const Cart = () => {
               <hr />
               <div className="d-flex justify-content-between mb-4">
                 <span className="fw-bold">Total</span>
-                <span className="fw-bold">Rs. {total}</span>
+                <span className="fw-bold">Rs. {total?.toFixed(2)}</span>
               </div>
 
-              {/* Promo Code */}
-              <div className="mb-4">
-                <div className="input-group">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Promo code"
-                  />
-                  <button className="btn btn-outline-secondary" type="button">
-                    Apply
-                  </button>
-                </div>
-              </div>
 
-              <button className="btn btn-primary checkout-btn w-100 mb-3">
+              <Link to={'/checkout'} className="btn btn-primary checkout-btn w-100 mb-3">
                 Proceed to Checkout
-              </button>
+              </Link>
 
               <div className="d-flex justify-content-center gap-2">
                 <i className="bi bi-shield-check text-success"></i>

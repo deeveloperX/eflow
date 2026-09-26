@@ -94,9 +94,6 @@ const ProductDetail = () => {
                 <Link to="/cart" className="btn btn-outline-primary btn-lg d-flex align-items-center justify-content-center px-4">
                   <i className="bi bi-cart"></i> Open Cart
                 </Link>
-                <button  className="btn btn-outline-secondary btn-lg d-flex align-items-center justify-content-center px-4">
-                  <i className="bi bi-heart"></i>
-                </button>
               </div>
 
               {/* Product Badges */}
