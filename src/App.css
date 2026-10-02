@@ -1,3 +1,15 @@
 .cursor-pointer{
     cursor: pointer;
 }
+
+.bg-myPrimary{
+    background-color: rgb(72, 175, 255);
+}
+
+.text-myPrimary{
+    color: rgb(72, 175, 255);
+}
+
+.w-60{
+    width: 60%;
+}

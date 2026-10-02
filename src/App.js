@@ -5,7 +5,6 @@ import Cart from './Components/Cart';
 import Checkout from './Components/Checkout';
 import OrderSuccess from './Components/OrderSuccess';
 import { BrowserRouter, Routes, Route } from "react-router";
-import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from './Components/Navbar';
 import Deals from './Components/Deals';
 
